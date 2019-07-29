@@ -1,0 +1,25 @@
+@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
+
+<button class="btn btn-primary" onclick="sendAlert()">Send Alert</button>
+<button class="btn btn-primary" onclick="sendCelebrate()">Send Celebrate</button>
+
+@functions {
+
+    int currentCount = 0;
+
+    void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    void SendAlert()
+    {
+        //JsRuntime.InvokeAsync<string>("sendAlert");
+    }
+}

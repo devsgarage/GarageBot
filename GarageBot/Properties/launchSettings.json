@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GarageBot": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

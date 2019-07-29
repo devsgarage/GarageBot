@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <UserSecretsId>044a981f-8e29-4023-bf7c-a863075a044e</UserSecretsId>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0-preview7.19362.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChatCommands\ChatCommands.csproj" />
+    <ProjectReference Include="..\ChatServices\ChatServices.csproj" />
+    <ProjectReference Include="..\Service.Core\Service.Core.csproj" />
+    <ProjectReference Include="..\Service.Infrastructure\Service.Infrastructure.csproj" />
+    <ProjectReference Include="..\Service.Twitch\Service.Twitch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

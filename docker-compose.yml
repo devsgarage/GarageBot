@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  garagebot:
+    image: ${DOCKER_REGISTRY-}garagebot
+    build:
+      context: .
+      dockerfile: GarageBot\Dockerfile
+    links:
+      - web
+    depends_on:
+      - web    
+
+  web:
+    image: ${DOCKER_REGISTRY-}garagebotweb
+    build:
+      context: .
+      dockerfile: GarageBot.Web\Dockerfile
+

@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0.0-preview3-stretch-slim AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview3 AS build
+WORKDIR /src
+COPY ["GarageBot.Web/GarageBot.Web.csproj", "GarageBot.Web/"]
+COPY ["ChatServices/ChatServices.csproj", "ChatServices/"]
+COPY ["Service.Twitch/Service.Twitch.csproj", "Service.Twitch/"]
+COPY ["Service.Core/Service.Core.csproj", "Service.Core/"]
+RUN dotnet restore "GarageBot.Web/GarageBot.Web.csproj"
+COPY . .
+WORKDIR "/src/GarageBot.Web"
+RUN dotnet build "GarageBot.Web.csproj" -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "GarageBot.Web.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "GarageBot.Web.dll"]
