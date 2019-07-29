@@ -31,12 +31,10 @@ namespace GarageBot
                     services.AddCommands();
                     var twitchSettings = hostContext.Configuration.GetSection("twitch").Get<TwitchSettings>();
                     services.AddSingleton(twitchSettings);
-                    //services.AddSingleton(new HttpClient());
+
                     services.AddHttpClient<TwitchService>();
                     services.AddHttpClient<Proxy>();
-                    //services.AddSingleton<Proxy>();
                     services.AddSingleton<TwitchChatClient>();
-                    //services.AddSingleton<TwitchService>();
                     services.AddSingleton<IHostedService, Bot>();
                     var test = hostContext.Configuration["TestVar"];
                     var hubUrl = hostContext.Configuration["GarageBotHub"];
@@ -48,31 +46,6 @@ namespace GarageBot
                     logging.AddConsole();
                 })
                 .RunConsoleAsync();
-
-            //var command = "";
-            //Console.WriteLine("Interactive console for testing GarageBot");
-            //Console.WriteLine("Enter QUIT to exit console");
-            ////var client = new TwitchChatClient();
-            //var proxy = new Proxy(new HttpClient());
-            ////client.Init();
-            //var bot = new Bot();
-            //do
-            //{
-            //    command = Console.ReadLine();
-            //    if (command.Equals("followerCount"))
-            //    {
-            //        var result = await proxy.GetFollowersCount();
-            //        Console.WriteLine($"Follower Count: {result}");                    
-            //    }
-            //    else if (command.Equals("followers"))
-            //    {
-            //        var followers = await proxy.GetAllFollowers();
-            //        foreach(var follower in followers)
-            //        {
-            //            Console.WriteLine(follower);
-            //        }
-            //    }
-            //} while (command != "QUIT");
         }
     }
 }
