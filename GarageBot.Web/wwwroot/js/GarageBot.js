@@ -1,5 +1,5 @@
 ﻿window.audioLib = {
     playAudio: function (element) {
-    element.play();
+        document.getElementById(element).play();
     }
-}
+};

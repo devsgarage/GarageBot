@@ -7,9 +7,9 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
-<audio ref="alertAudio" src="/content/imperial-alert.mp3"></audio>
-<audio ref="celebrateAudio" src="/content/celebration.mp3"></audio>
-
+<audio id="alertAudio" ref="alertAudio" src="/content/imperial-alert.mp3"></audio>
+<audio id="celebrateAudio" ref="celebrateAudio" src="/content/celebration.mp3"></audio>
+<br/><br/>
 @AlertText
 
 @functions{
@@ -37,11 +37,11 @@ Welcome to your new app.
             {
                 if (AlertSent)
                 {
-                    JSRuntime.InvokeAsync<object>("audioLib.playAudio", alertAudio);
+                    JSRuntime.InvokeAsync<object>("audioLib.playAudio", "alertAudio");
                 }
                 else if (CelebrateSent)
                 {
-                    JSRuntime.InvokeAsync<object>("audioLib.playAudio", celebrateAudio);
+                    JSRuntime.InvokeAsync<object>("audioLib.playAudio", "celebrateAudio");
                 }
             });
 
