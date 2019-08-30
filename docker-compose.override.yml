@@ -1,10 +1,5 @@
 version: '3.4'
 
-networks:
-  default:
-    external:
-      name: nat
-
 services:
   garagebot:
     environment:
@@ -13,16 +8,17 @@ services:
       - GarageBotHub=http://web/garageHub
       - TestVar=web
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets/:C:\Users\ContainerUser\AppData\Roaming\Microsoft\UserSecrets\ 
+      - ${APPDATA}/Microsoft/UserSecrets/:/root/.microsoft/usersecrets 
     
   web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=http://+:80
       - GarageBotHub=http://web/garageHub
     ports:
       - "60079:80"
       - "44371:443"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:C:\Users\ContainerUser\AppData\Roaming\Microsoft\UserSecrets:ro
-      - ${APPDATA}/ASP.NET/Https:C:\Users\ContainerUser\AppData\Roaming\ASP.NET\Https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets
+      - ${HOME}/.aspnet/https:/root/.aspnet/https/
+      - ${USERPROFILE}\.aspnet\https:/https/

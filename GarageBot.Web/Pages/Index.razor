@@ -12,17 +12,17 @@ Welcome to your new app.
 <br/><br/>
 @AlertText
 
-@functions{
+@code{
 
-    ElementRef alertAudio;
-    ElementRef celebrateAudio;
+    ElementReference alertAudio;
+    ElementReference celebrateAudio;
 
     public string AlertText = "No alert yet";
 
     public bool AlertSent = false;
     public bool CelebrateSent = false;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         HubService.OnAlertReceived += AlertReceived;
         HubService.OnCelebrateReceived += CelebrateReceived;
@@ -33,7 +33,7 @@ Welcome to your new app.
     {
         try
         {
-            Invoke(() =>
+            InvokeAsync(() =>
             {
                 if (AlertSent)
                 {
@@ -58,7 +58,7 @@ Welcome to your new app.
     {
         try
         {
-            Invoke(() =>
+            InvokeAsync(() =>
             {
                 AlertSent = true;
                 AlertText = $"Alert received {DateTime.Now}";
@@ -76,7 +76,7 @@ Welcome to your new app.
     {
         try
         {
-            Invoke(() =>
+            InvokeAsync(() =>
             {
                 CelebrateSent = true;
                 JSRuntime.InvokeAsync<object>("audioLib.playAudio", celebrateAudio);
