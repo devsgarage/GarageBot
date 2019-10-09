@@ -29,7 +29,7 @@ Welcome to your new app.
         await HubService.Connect();
     }
 
-    protected override void OnAfterRender()
+    protected override void OnAfterRender(bool firstRender)
     {
         try
         {
