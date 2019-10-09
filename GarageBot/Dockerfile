@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview8 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
 COPY ["GarageBot/GarageBot.csproj", "GarageBot/"]
 COPY ["Service.Twitch/Service.Twitch.csproj", "Service.Twitch/"]

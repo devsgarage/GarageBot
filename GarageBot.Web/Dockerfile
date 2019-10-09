@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-preview8 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
 COPY ["GarageBot.Web/GarageBot.Web.csproj", "GarageBot.Web/"]
 COPY ["ChatServices/ChatServices.csproj", "ChatServices/"]
