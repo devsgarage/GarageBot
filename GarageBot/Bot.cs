@@ -81,7 +81,7 @@ namespace GarageBot
                 } 
                 catch(Exception ex)
                 {
-                    Console.WriteLine($"command {commandToExecute.Command} threw an exception: {ex.Message}");
+                    Console.WriteLine($"command {commandToExecute.GetType().ToString()} threw an exception: {ex.Message}");
                 }
             }
 
