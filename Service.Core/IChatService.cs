@@ -8,11 +8,14 @@ namespace Service.Core
     public interface IChatService
     {
         event EventHandler<ChatMessageReceivedArgs> ChatMessageReceieved;
+        event EventHandler<UserJoinedChatArgs> UserJoinedChat;
 
         Task Start();
 
         Task<bool> SendMessage(string message);
 
         Task<TimeSpan> GetUptime();
+
+        Task<TwitchTeam> GetTwitchTeam(string teamName);
     }
 }

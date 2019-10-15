@@ -13,6 +13,8 @@ namespace Service.Core
 
         TimeSpan? Cooldown { get; }
 
+        bool CanBeListed() => true;
+
         Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text);
     }
 }

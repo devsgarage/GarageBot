@@ -28,13 +28,13 @@ namespace GarageBot
                 {
                     services.AddLogging();
                     services.AddOptions();
-                    services.AddCommands();
                     var twitchSettings = hostContext.Configuration.GetSection("twitch").Get<TwitchSettings>();
                     services.AddSingleton(twitchSettings);
 
-                    services.AddHttpClient<TwitchService>();
+                    services.AddHttpClient<IChatService, TwitchService>();
                     services.AddHttpClient<Proxy>();
                     services.AddSingleton<TwitchChatClient>();
+                    services.AddCommands();
                     services.AddSingleton<IHostedService, Bot>();
                     var test = hostContext.Configuration["TestVar"];
                     var hubUrl = hostContext.Configuration["GarageBotHub"];

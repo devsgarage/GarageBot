@@ -24,6 +24,7 @@ namespace ChatServices
         }
 
         public event EventHandler<ChatMessageReceivedArgs> ChatMessageReceieved;
+        public event EventHandler<UserJoinedChatArgs> UserJoinedChat;
 
         public Task<bool> SendMessage(string message)
         {
@@ -35,8 +36,14 @@ namespace ChatServices
         {
             chatClient.NewMessage += ChatClient_NewMessage;
             chatClient.Connected += ChatClient_Connected;
+            chatClient.UserJoined += ChatClient_UserJoined;
             chatClient.Init();
             return Task.CompletedTask;
+        }
+
+        private void ChatClient_UserJoined(object sender, Service.Twitch.Models.ChatUserJoinedEventArgs e)
+        {
+            UserJoinedChat?.Invoke(this, new UserJoinedChatArgs { UserName = e.UserName });
         }
 
         private void ChatClient_Connected(object sender, Service.Twitch.Models.ChatConnectedEventArgs e)
@@ -60,6 +67,13 @@ namespace ChatServices
             StreamData x = ParseStreamMetaData(results);
             var uptime = DateTime.UtcNow - x.StartedAt;
             return uptime;
+        }
+
+        public async Task<TwitchTeam> GetTwitchTeam(string teamName)
+        {
+            var teamString = await proxy.GetTeamInfo(teamName);
+            var team = TwitchTeam.FromJson(teamString);
+            return team;
         }
 
         private static StreamData ParseStreamMetaData(string results)
