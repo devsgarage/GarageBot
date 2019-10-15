@@ -10,18 +10,18 @@ namespace ChatCommands
     public class ShoutOutLiveCodersCommand : IChatCommand
     {
         IChatService chatService;
-        List<string> teammates;
+        Task<List<string>> teammates;
 
         public ShoutOutLiveCodersCommand(IChatService chatService)
         {
             this.chatService = chatService;
-            LoadTeammates();
+            this.teammates = LoadTeammates();
         }
 
-        private async Task LoadTeammates()
+        private async Task<List<string>> LoadTeammates()
         {
             var teammates = await chatService.GetTwitchTeam("livecoders");
-            this.teammates = teammates?.Users?.Select(x => x.Name).ToList();
+            return teammates?.Users?.Select(x => x.Name).ToList();
         }
 
         public string Command => "userjoined";
@@ -37,7 +37,8 @@ namespace ChatCommands
             if (!isBroadcaster)
                 return;
 
-            var isPartOfTeam = teammates.Exists(x => x == userName);
+            var mates = await teammates;
+            var isPartOfTeam = mates?.Exists(x => x == userName) ?? false;
             if (isPartOfTeam)
                 await service.SendMessage($"Check out another great streamer @{userName} over on https://twitch.tv/{userName}");
         }

@@ -74,8 +74,15 @@ namespace GarageBot
 
             foreach (var commandToExecute in commandsToExecute)
             {
-                commandToExecute.Execute(service, isBroadcaster, userName, command.parameter);
-                commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
+                try
+                {
+                    commandToExecute.Execute(service, isBroadcaster, userName, command.parameter);
+                    commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
+                } 
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"command {commandToExecute.Command} threw an exception: {ex.Message}");
+                }
             }
 
             (ReadOnlyMemory<char> command, ReadOnlyMemory<char> parameter) ParseCommand(string message)
