@@ -40,7 +40,7 @@ namespace ChatCommands
             var mates = await teammates;
             var isPartOfTeam = mates?.Exists(x => x == userName) ?? false;
             if (isPartOfTeam)
-                await service.SendMessage($"Check out another great streamer @{userName} over on https://twitch.tv/{userName}");
+                await service.SendMessage($"Check out another member of the Live Coders, @{userName}, over on https://twitch.tv/{userName}");
         }
     }
 }
