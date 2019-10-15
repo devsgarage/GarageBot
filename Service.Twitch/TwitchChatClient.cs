@@ -36,6 +36,7 @@ namespace Service.Twitch
 
         public event EventHandler<ChatConnectedEventArgs> Connected;
         public event EventHandler<NewMessageEventArgs> NewMessage;
+        public event EventHandler<ChatUserJoinedEventArgs> UserJoined;
 
         public TwitchChatClient(TwitchSettings settings)
         {            
@@ -234,7 +235,7 @@ namespace Service.Twitch
 
             if (!string.IsNullOrEmpty(userName) && msg.Contains($" JOIN #{chatChannelName}"))
             {
-                //UserJoined?.Invoke(this, new ChatUserJoinedEventArgs { UserName = userName });
+                UserJoined?.Invoke(this, new ChatUserJoinedEventArgs { UserName = userName });
                 Console.WriteLine($"***** UserName: {userName} *****");
             }
 

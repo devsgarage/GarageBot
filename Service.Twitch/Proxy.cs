@@ -14,7 +14,8 @@ namespace Service.Twitch
         HttpClient client;
         private const string developersGarageTwitchId = "245291776";
         private const string channelName = "developersgarage";
-        public Proxy(HttpClient client, TwitchSettings settings            )
+        private const string twitchApiUri = "https://api.twitch.tv";
+        public Proxy(HttpClient client, TwitchSettings settings)
         {
             this.client = client;
             ConfigureClient(settings);
@@ -22,8 +23,9 @@ namespace Service.Twitch
 
         private void ConfigureClient(TwitchSettings settings)
         {
-            client.BaseAddress =  new Uri("https://api.twitch.tv");
+            client.BaseAddress =  new Uri(twitchApiUri);
             client.DefaultRequestHeaders.Add("Client-ID", settings.ClientId);
+            client.DefaultRequestHeaders.Add("Accept", "application/vnd.twitchtv.v5+json");
         }
 
         private async Task<string> GetFollowers(string pageCursor = "")
@@ -61,6 +63,13 @@ namespace Service.Twitch
         public async Task<string> GetStreamMetaData()
         {
             var result = await client.GetAsync($"helix/streams?user_login={channelName}");
+            var x = await result.Content.ReadAsStringAsync();
+            return x;
+        }
+
+        public async Task<string> GetTeamInfo(string teamName)
+        {
+            var result = await client.GetAsync($"kraken/teams/{teamName}");
             var x = await result.Content.ReadAsStringAsync();
             return x;
         }

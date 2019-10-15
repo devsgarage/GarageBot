@@ -36,7 +36,7 @@ namespace ChatCommands
         private string GetCommandDescription(ReadOnlyMemory<char> text)
         {
             string commandMessage;
-            var command = serviceProvider.GetServices<IChatCommand>().Where(c => text.Span.Equals(c.Command, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            var command = serviceProvider.GetServices<IChatCommand>().Where(c => text.Span.Equals(c.Command, StringComparison.OrdinalIgnoreCase) && c.CanBeListed()).FirstOrDefault();
             if (command == null)
                 commandMessage = $@"Command ""{text.ToString()}"" is not a valid command";
             else
@@ -46,7 +46,7 @@ namespace ChatCommands
 
         private string GetAllCommandsAvailable()
         {
-            var commands = serviceProvider.GetServices<IChatCommand>().ToArray();
+            var commands = serviceProvider.GetServices<IChatCommand>().Where(x=>x.CanBeListed()).ToArray();
             StringBuilder sb = new StringBuilder();
             var s = string.Join(" ", commands.Select(c => $"{c.Command}"));
             sb.Append("Available commands: ").Append(s);

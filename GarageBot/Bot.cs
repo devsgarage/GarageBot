@@ -19,22 +19,32 @@ namespace GarageBot
 {
     public class Bot : IHostedService
     {
+        private const string USER_JOINED_COMMAND_NAME = "userjoined";
         public List<IChatCommand> commands = new List<IChatCommand>();
         private IChatService service;
         private ConcurrentDictionary<string, DateTime> commandLastExecution = new ConcurrentDictionary<string, DateTime>();
         private ILogger<Bot> logger;
         private IServiceProvider serviceProvider;
 
-        public Bot(ILogger<Bot> logger, IServiceProvider serviceProvider, TwitchService twitchService)
+        public Bot(ILogger<Bot> logger, IServiceProvider serviceProvider, IChatService twitchService)
         {
             this.logger = logger;
             this.serviceProvider = serviceProvider;
-            LoadCommands();
-            var client = new HttpClient();
-            //service = new TwitchService(client, new Proxy(client), new TwitchChatClient());
+            LoadCommands();            
             service = twitchService;
             service.ChatMessageReceieved += Service_ChatMessageReceieved;
+            service.UserJoinedChat += Service_UserJoinedChat;
             service.Start();
+        }
+
+        private void Service_UserJoinedChat(object sender, UserJoinedChatArgs e)
+        {
+            var commandsToExecute = commands.Where(c => USER_JOINED_COMMAND_NAME.AsSpan().Equals(c.Command.AsSpan(), StringComparison.OrdinalIgnoreCase) && !CommandInCooldown(c.Command, c.Cooldown));
+            foreach (var commandToExecute in commandsToExecute)
+            {
+                commandToExecute.Execute(service, true, e.UserName, null);
+                commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
+            }
         }
 
         private void LoadCommands()
