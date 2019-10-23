@@ -25,6 +25,7 @@ namespace GarageBot
         private ConcurrentDictionary<string, DateTime> commandLastExecution = new ConcurrentDictionary<string, DateTime>();
         private ILogger<Bot> logger;
         private IServiceProvider serviceProvider;
+        private bool isStreaming = false;
 
         public Bot(ILogger<Bot> logger, IServiceProvider serviceProvider, IChatService twitchService)
         {
