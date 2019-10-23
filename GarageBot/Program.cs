@@ -40,6 +40,7 @@ namespace GarageBot
                     var hubUrl = hostContext.Configuration["GarageBotHub"];
                     Console.WriteLine($"hub url: {hubUrl}");
                     services.AddSingleton<IHubService, GarageHubService>((provider)=> new GarageHubService(hubUrl));
+                    services.AddSingleton<IStreamingService, StreamingService>();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

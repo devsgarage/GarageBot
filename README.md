@@ -19,6 +19,8 @@ _note: all commands begin with a ```!```_
 - ```uptime``` - display the amount of time stream has been running
 - ```test``` - test to confirm bot is functional
 - ```testaudio``` - test audio functionality
+- ```startStream``` - manual trigger to set stream flag to active
+- ```stopStream``` - manual trigger to set stream flag to inactive
 
 Event based commands
 - ```userjoined``` - repsonds to userjoined event and sends an automatic shout out to members of the Live Coders team
