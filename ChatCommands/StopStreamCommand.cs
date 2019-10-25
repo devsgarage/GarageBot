@@ -10,7 +10,7 @@ namespace ChatCommands
     {
         private IStreamingService streamingService;
 
-        public string Command => "stopStream";
+        public IEnumerable<string> Command => new[] { "stopStream" };
 
         public string Description => "Sets the is stream live flag to false";
 

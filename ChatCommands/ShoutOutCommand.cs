@@ -8,7 +8,7 @@ namespace ChatCommands
 {
     public class ShoutOutCommand : IChatCommand
     {
-        public string Command => "so";
+        public IEnumerable<string> Command => new[] { "so" };
         public string Description => "BROADCASTER ONLY -- Gives a shout out to a fellow streamer!";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
