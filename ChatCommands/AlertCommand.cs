@@ -14,7 +14,7 @@ namespace ChatCommands
             this.hubService = hubService;
         }
 
-        public string Command => "alert";
+        public IEnumerable<string> Command => new[] { "alert" };
         public string Description => "Get broadcasters attention";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 

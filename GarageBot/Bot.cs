@@ -40,11 +40,13 @@ namespace GarageBot
 
         private void Service_UserJoinedChat(object sender, UserJoinedChatArgs e)
         {
-            var commandsToExecute = commands.Where(c => USER_JOINED_COMMAND_NAME.AsSpan().Equals(c.Command.AsSpan(), StringComparison.OrdinalIgnoreCase) && !CommandInCooldown(c.Command, c.Cooldown));
+            var commandsToExecute =
+                commands.Where(c => c.Command.Any(cmd => USER_JOINED_COMMAND_NAME.AsSpan().Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
+                                                         !CommandInCooldown(cmd, c.Cooldown)));
             foreach (var commandToExecute in commandsToExecute)
             {
                 commandToExecute.Execute(service, true, e.UserName, null);
-                commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
+                commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
             }
         }
 
@@ -71,14 +73,16 @@ namespace GarageBot
 
             var command = ParseCommand(message);
 
-            var commandsToExecute = commands.Where(c => command.command.Span.Equals(c.Command.AsSpan(), StringComparison.OrdinalIgnoreCase) && !CommandInCooldown(c.Command, c.Cooldown));
+            var commandsToExecute =
+                commands.Where(c => c.Command.Any(cmd => command.command.Span.Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
+                                                         !CommandInCooldown(cmd, c.Cooldown)));
 
             foreach (var commandToExecute in commandsToExecute)
             {
                 try
                 {
                     commandToExecute.Execute(service, isBroadcaster, userName, command.parameter);
-                    commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
+                    commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
                 } 
                 catch(Exception ex)
                 {

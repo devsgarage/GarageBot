@@ -9,7 +9,7 @@ namespace ChatCommands
     public class LiveCodersUrlCommand : IChatCommand
     {
         private const string liveCodersUrl = "https://twitch.tv/team/livecoders";
-        public string Command => "livecoders";
+        public IEnumerable<string> Command => new[] { "livecoders" };
 
         public string Description => "Displays Twitch URL for Live Coders team";
 

@@ -7,7 +7,7 @@ namespace Service.Core
 {
     public interface IChatCommand
     {
-        string Command { get; }
+        IEnumerable<string> Command { get; }
 
         string Description { get; }
 

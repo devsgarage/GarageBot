@@ -24,7 +24,7 @@ namespace ChatCommands
             return teammates?.Users?.Select(x => x.Name).ToList();
         }
 
-        public string Command => "userjoined";
+        public IEnumerable<string> Command => new[] { "userjoined" };
 
         public string Description => "BROADCASTER ONLY -> Automatic shout out to Live Coders teammates";
 

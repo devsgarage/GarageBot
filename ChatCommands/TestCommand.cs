@@ -8,7 +8,7 @@ namespace ChatCommands
 {
     public class TestCommand : IChatCommand
     {
-        public string Command => "test";
+        public IEnumerable<string> Command => new[] { "test" };
         public string Description => "Tests whether or not the bot system is functioning";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 

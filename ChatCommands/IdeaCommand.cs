@@ -9,7 +9,7 @@ namespace ChatCommands
 {
     public class IdeaCommand : IChatCommand
     {
-        public string Command => "idea";
+        public IEnumerable<string> Command => new[] { "idea" };
         public string Description => "Submit an idea, suggestion or feedback to broadcaster";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(1);
 

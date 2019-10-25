@@ -8,7 +8,7 @@ namespace ChatCommands
 {
     public class UptimeCommand : IChatCommand
     {
-        public string Command => "uptime";
+        public IEnumerable<string> Command => new[] { "uptime" };
         public string Description => "Displays the uptime of the stream";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(5);
              
