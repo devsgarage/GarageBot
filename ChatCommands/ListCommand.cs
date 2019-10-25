@@ -10,7 +10,7 @@ namespace ChatCommands
 {
     public class ListCommand : IChatCommand
     {
-        public IEnumerable<string> Command => new[] { "list" };
+        public IEnumerable<string> Command => new[] { "list", "help" };
         public string Description => "Displays a list of available commands (ex. !list), or description of a specific command (ex. !list project)";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
