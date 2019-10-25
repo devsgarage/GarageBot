@@ -20,7 +20,7 @@ namespace ChatCommands
 
         private async Task<List<string>> LoadTeammates()
         {
-            var teammates = await chatService.GetTwitchTeam("livecoders");
+            var teammates = await chatService.GetTwitchTeam(Constants.ChatService.LiveCoders);
             return teammates?.Users?.Select(x => x.Name).ToList();
         }
 
