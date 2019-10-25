@@ -1,17 +1,11 @@
-﻿using ChatCommands;
-using ChatServices;
-using Microsoft.Extensions.DependencyInjection;
+﻿using ChatServices;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Service.Core;
-using Service.Twitch;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,13 +33,11 @@ namespace GarageBot
 
         private void Service_UserJoinedChat(object sender, UserJoinedChatArgs e)
         {
-            var commandsToExecute =
-                commands.Where(c => c.Command.Any(cmd => USER_JOINED_COMMAND_NAME.AsSpan().Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
-                                                         !CommandInCooldown(cmd, c.Cooldown)));
+            var commandsToExecute = commands.Where(c => USER_JOINED_COMMAND_NAME.AsSpan().Equals(c.Command.AsSpan(), StringComparison.OrdinalIgnoreCase) && !CommandInCooldown(c.Command, c.Cooldown));
             foreach (var commandToExecute in commandsToExecute)
             {
                 commandToExecute.Execute(service, true, e.UserName, null);
-                commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
+                commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
             }
         }
 
@@ -62,16 +54,14 @@ namespace GarageBot
 
             var command = ParseCommand(message);
 
-            var commandsToExecute =
-                commands.Where(c => c.Command.Any(cmd => command.command.Span.Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
-                                                         !CommandInCooldown(cmd, c.Cooldown)));
+            var commandsToExecute = commands.Where(c => command.command.Span.Equals(c.Command.AsSpan(), StringComparison.OrdinalIgnoreCase) && !CommandInCooldown(c.Command, c.Cooldown));
 
             foreach (var commandToExecute in commandsToExecute)
             {
                 try
                 {
                     commandToExecute.Execute(service, isBroadcaster, userName, command.parameter);
-                    commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
+                    commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
                 } 
                 catch(Exception ex)
                 {
