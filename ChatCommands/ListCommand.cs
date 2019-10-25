@@ -10,7 +10,7 @@ namespace ChatCommands
 {
     public class ListCommand : IChatCommand
     {
-        public string Command => "list";
+        public IEnumerable<string> Command => new[] { "list", "help" };
         public string Description => "Displays a list of available commands (ex. !list), or description of a specific command (ex. !list project)";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
@@ -36,7 +36,7 @@ namespace ChatCommands
         private string GetCommandDescription(ReadOnlyMemory<char> text)
         {
             string commandMessage;
-            var command = serviceProvider.GetServices<IChatCommand>().Where(c => text.Span.Equals(c.Command, StringComparison.OrdinalIgnoreCase) && c.CanBeListed()).FirstOrDefault();
+            var command = serviceProvider.GetServices<IChatCommand>().Where(c => text.Span.Equals(c.Command.First(), StringComparison.OrdinalIgnoreCase) && c.CanBeListed()).FirstOrDefault();
             if (command == null)
                 commandMessage = $@"Command ""{text.ToString()}"" is not a valid command";
             else

@@ -16,7 +16,7 @@ namespace ChatCommands
             this.hubService.Connect();
         }
 
-        public string Command => "testaudio";
+        public IEnumerable<string> Command => new[] { "testaudio" };
         public string Description => "Tests the ability of the system to play audio";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(5);
         

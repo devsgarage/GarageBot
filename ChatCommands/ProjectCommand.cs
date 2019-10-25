@@ -8,7 +8,7 @@ namespace ChatCommands
 {
     public class ProjectCommand : IChatCommand
     {
-        public string Command => "project";
+        public IEnumerable<string> Command => new[] { "project" };
         public string Description => "Gets or Sets (BROADCASTER ONLY) the current project being worked on stream.";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(5);
 

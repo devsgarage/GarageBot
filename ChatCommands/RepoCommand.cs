@@ -8,7 +8,7 @@ namespace ChatCommands
 {
     public class RepoCommand : IChatCommand
     {
-        public string Command => "repo";
+        public IEnumerable<string> Command => new[] { "repo" };
         public string Description => "Get link to GitHub repository";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
