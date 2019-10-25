@@ -20,18 +20,17 @@ namespace GarageBot
     public class Bot : IHostedService
     {
         private const string USER_JOINED_COMMAND_NAME = "userjoined";
-        public List<IChatCommand> commands = new List<IChatCommand>();
+        public IEnumerable<IChatCommand> commands;
         private IChatService service;
         private ConcurrentDictionary<string, DateTime> commandLastExecution = new ConcurrentDictionary<string, DateTime>();
         private ILogger<Bot> logger;
-        private IServiceProvider serviceProvider;
-        private bool isStreaming = false;
+        private LoggingService loggingService;
 
-        public Bot(ILogger<Bot> logger, IServiceProvider serviceProvider, IChatService twitchService)
+        public Bot(ILogger<Bot> logger, IEnumerable<IChatCommand> chatCommands, IChatService twitchService, LoggingService loggingService)
         {
             this.logger = logger;
-            this.serviceProvider = serviceProvider;
-            LoadCommands();            
+            this.commands = chatCommands;
+            this.loggingService = loggingService;
             service = twitchService;
             service.ChatMessageReceieved += Service_ChatMessageReceieved;
             service.UserJoinedChat += Service_UserJoinedChat;
@@ -45,16 +44,6 @@ namespace GarageBot
             {
                 commandToExecute.Execute(service, true, e.UserName, null);
                 commandLastExecution[commandToExecute.Command] = DateTime.UtcNow;
-            }
-        }
-
-        private void LoadCommands()
-        {
-            var chatCommands = serviceProvider.GetServices<IChatCommand>().ToArray();
-            foreach(var chatCommand in chatCommands)
-            {
-                commands.Add(chatCommand);
-                logger.LogInformation($"Loaded command: {chatCommand.Command}");
             }
         }
 

@@ -41,5 +41,36 @@ namespace GarageBot
                 //Console.WriteLine($"Loaded command: {chatCommand.Command}");
             }
         }
+
+        public static void AddLoggingProviders(this IServiceCollection collection)
+        {
+            var type = typeof(ILoggingProvider);
+            List<Type> types = new List<Type>();
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var di = new DirectoryInfo(path);
+            var dlls = di.GetFiles("*.dll");
+            foreach (var file in dlls)
+            {
+                try
+                {
+                    var nextAssembly = Assembly.LoadFrom(file.FullName);
+                    types.AddRange(nextAssembly.GetTypes()
+                        .Where(z => type.IsAssignableFrom(z) && !z.IsInterface && !z.IsAbstract)
+                        .ToList());
+                }
+                catch (BadImageFormatException)
+                {
+                    // Not a .net assembly  - ignore
+                }
+            }
+
+            foreach (var t in types)
+            {
+                //var chatCommand = (IChatCommand)Activator.CreateInstance(t);
+                collection.AddSingleton(type, t);
+                //logger.LogInformation($"Loaded command: {chatCommand.Command}");
+                //Console.WriteLine($"Loaded command: {chatCommand.Command}");
+            }
+        }
     }
 }

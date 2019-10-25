@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChatCommands\ChatCommands.csproj" />
     <ProjectReference Include="..\ChatServices\ChatServices.csproj" />
+    <ProjectReference Include="..\LoggingProviders\LoggingProviders.csproj" />
     <ProjectReference Include="..\Service.Core\Service.Core.csproj" />
     <ProjectReference Include="..\Service.Infrastructure\Service.Infrastructure.csproj" />
     <ProjectReference Include="..\Service.Twitch\Service.Twitch.csproj" />
