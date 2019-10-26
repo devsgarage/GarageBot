@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -17,7 +16,7 @@ namespace ChatCommands
 
         public bool CanBeListed() => true;
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
             await service.SendMessage($"Check out all the Live Coders at {liveCodersUrl}");
         }

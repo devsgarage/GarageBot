@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -18,7 +17,7 @@ namespace ChatCommands
 
         public bool CanBeListed() => false;
 
-        public Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public Task Execute(IChatService service, CommandArgs args)
         {
             streamingService.StartStream();
             return Task.CompletedTask;

@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -14,9 +13,9 @@ namespace ChatCommands
 
         
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
-            if (isBroadcaster)
+            if (args.IsBroadcaster)
                 await service.SendMessage("This is a test. This station is conducting a test of the Emergency Broadcast System. This is only a test.");
         }
     }

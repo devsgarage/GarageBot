@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -14,10 +13,10 @@ namespace ChatCommands
 
         private string currentProject = "";
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
-            if (isBroadcaster && !text.IsEmpty)
-                currentProject = text.ToString();
+            if (args.IsBroadcaster && !args.Text.IsEmpty)
+                currentProject = args.Text.ToString();
             if (string.IsNullOrWhiteSpace(currentProject))
                 await service.SendMessage("Hey @developersgarage, what are we working on today?");
             else

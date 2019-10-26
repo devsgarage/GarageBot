@@ -21,13 +21,13 @@ namespace ChatCommands
             this.serviceProvider = serviceProvider;
         }
 
-        public Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public Task Execute(IChatService service, CommandArgs args)
         {
             string message;
-            if (text.IsEmpty)
+            if (args.Text.IsEmpty)
                 message = GetAllCommandsAvailable();
             else
-                message = GetCommandDescription(text);
+                message = GetCommandDescription(args.Text);
 
             service.SendMessage(message);
             return Task.CompletedTask;

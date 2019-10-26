@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -12,10 +11,10 @@ namespace ChatCommands
         public string Description => "BROADCASTER ONLY -- Gives a shout out to a fellow streamer!";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
-            if (isBroadcaster)
-                await service.SendMessage($"Check out another great streamer @{text} over on https://twitch.tv/{text}");
+            if (args.IsBroadcaster)
+                await service.SendMessage($"Check out another great streamer @{args.Text} over on https://twitch.tv/{args.Text}");
         }
     }
 }
