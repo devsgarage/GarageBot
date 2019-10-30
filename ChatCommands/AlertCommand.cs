@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -18,9 +17,9 @@ namespace ChatCommands
         public string Description => "Get broadcasters attention";
         public TimeSpan? Cooldown => TimeSpan.FromSeconds(10);
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
-            await hubService.SendAlert(userName);
+            await hubService.SendAlert(args.UserName);
         }
     }
 }

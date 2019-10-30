@@ -45,7 +45,12 @@ namespace GarageBot
                                                          !CommandInCooldown(cmd, c.Cooldown)));
             foreach (var commandToExecute in commandsToExecute)
             {
-                commandToExecute.Execute(service, true, e.UserName, null);
+                commandToExecute.Execute(service, new CommandArgs()
+                {
+                    IsBroadcaster = true,
+                    UserName = e.UserName,
+                    Text = null
+                });
                 commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
             }
         }
@@ -81,7 +86,12 @@ namespace GarageBot
             {
                 try
                 {
-                    commandToExecute.Execute(service, isBroadcaster, userName, command.parameter);
+                    commandToExecute.Execute(service, new CommandArgs()
+                    {
+                        IsBroadcaster = isBroadcaster,
+                        UserName = userName,
+                        Text = command.parameter
+                    });
                     commandLastExecution[commandToExecute.Command.First()] = DateTime.UtcNow;
                 } 
                 catch(Exception ex)
