@@ -20,7 +20,7 @@ namespace ChatCommands
         private async Task<List<string>> LoadTeammates()
         {
             var teammates = await chatService.GetTwitchTeam(Constants.ChatService.LiveCoders);
-            return teammates?.Users?.Select(x => x.Name).ToList();
+            return teammates?.Users?.Where(x => !x.Name.Equals(Constants.ChatService.ChannelName)).Select(x => x.Name).ToList();
         }
 
         public IEnumerable<string> Command => new[] { "userjoined" };
