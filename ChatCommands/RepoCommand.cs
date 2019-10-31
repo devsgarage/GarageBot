@@ -16,7 +16,9 @@ namespace ChatCommands
 
         public Task Execute(IChatService service, CommandArgs args)
         {
-            if (string.IsNullOrWhiteSpace(workingRepo))
+            if (args.IsBroadcaster && !args.Text.IsEmpty)
+                workingRepo = args.Text.ToString();
+            else if (string.IsNullOrWhiteSpace(workingRepo))
                 service.SendMessage(defaultRepo);
             else
                 service.SendMessage(workingRepo);
