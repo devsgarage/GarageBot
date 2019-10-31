@@ -48,9 +48,14 @@ namespace ChatCommands
         {
             var commands = serviceProvider.GetServices<IChatCommand>().Where(x=>x.CanBeListed()).ToArray();
             StringBuilder sb = new StringBuilder();
-            var s = string.Join(" ", commands.Select(c => $"{c.Command}"));
+            var s = string.Join(" ", commands.Select(c => GetCommandNames(c.Command)));
             sb.Append("Available commands: ").Append(s);
             return sb.ToString();
+
+            string GetCommandNames(IEnumerable<string> commandNames)
+            {
+                return string.Join(" ", commandNames.Select(c => $"{c}"));
+            }
         }
     }
 }
