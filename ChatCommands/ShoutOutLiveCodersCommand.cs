@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -21,7 +20,7 @@ namespace ChatCommands
         private async Task<List<string>> LoadTeammates()
         {
             var teammates = await chatService.GetTwitchTeam(Constants.ChatService.LiveCoders);
-            return teammates?.Users?.Select(x => x.Name).ToList();
+            return teammates?.Users?.Where(x => !x.Name.Equals(Constants.ChatService.ChannelName)).Select(x => x.Name).ToList();
         }
 
         public IEnumerable<string> Command => new[] { "userjoined" };
@@ -32,15 +31,15 @@ namespace ChatCommands
 
         public bool CanBeListed() => false;
 
-        public async Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public async Task Execute(IChatService service, CommandArgs args)
         {
-            if (!isBroadcaster)
+            if (!args.IsBroadcaster)
                 return;
 
             var mates = await teammates;
-            var isPartOfTeam = mates?.Exists(x => x == userName) ?? false;
+            var isPartOfTeam = mates?.Exists(x => x == args.UserName) ?? false;
             if (isPartOfTeam)
-                await service.SendMessage($"Check out another member of the Live Coders, @{userName}, over on https://twitch.tv/{userName}");
+                await service.SendMessage($"Check out another member of the Live Coders, @{args.UserName}, over on https://twitch.tv/{args.UserName}");
         }
     }
 }

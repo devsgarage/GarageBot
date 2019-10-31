@@ -1,7 +1,6 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatCommands
@@ -15,9 +14,11 @@ namespace ChatCommands
         private string defaultRepo = "https://github.com/devsgarage";
         private string workingRepo;
 
-        public Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public Task Execute(IChatService service, CommandArgs args)
         {
-            if (string.IsNullOrWhiteSpace(workingRepo))
+            if (args.IsBroadcaster && !args.Text.IsEmpty)
+                workingRepo = args.Text.ToString();
+            else if (string.IsNullOrWhiteSpace(workingRepo))
                 service.SendMessage(defaultRepo);
             else
                 service.SendMessage(workingRepo);

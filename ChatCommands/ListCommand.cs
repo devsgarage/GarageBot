@@ -21,13 +21,13 @@ namespace ChatCommands
             this.serviceProvider = serviceProvider;
         }
 
-        public Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text)
+        public Task Execute(IChatService service, CommandArgs args)
         {
             string message;
-            if (text.IsEmpty)
+            if (args.Text.IsEmpty)
                 message = GetAllCommandsAvailable();
             else
-                message = GetCommandDescription(text);
+                message = GetCommandDescription(args.Text);
 
             service.SendMessage(message);
             return Task.CompletedTask;
@@ -48,9 +48,14 @@ namespace ChatCommands
         {
             var commands = serviceProvider.GetServices<IChatCommand>().Where(x=>x.CanBeListed()).ToArray();
             StringBuilder sb = new StringBuilder();
-            var s = string.Join(" ", commands.Select(c => $"{c.Command}"));
+            var s = string.Join(" ", commands.Select(c => GetCommandNames(c.Command)));
             sb.Append("Available commands: ").Append(s);
             return sb.ToString();
+
+            string GetCommandNames(IEnumerable<string> commandNames)
+            {
+                return string.Join(" ", commandNames.Select(c => $"{c}"));
+            }
         }
     }
 }

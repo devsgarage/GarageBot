@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Service.Core
@@ -15,6 +14,6 @@ namespace Service.Core
 
         bool CanBeListed() => true;
 
-        Task Execute(IChatService service, bool isBroadcaster, string userName, ReadOnlyMemory<char> text);
+        Task Execute(IChatService service, CommandArgs args);
     }
 }
