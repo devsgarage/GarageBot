@@ -1,6 +1,7 @@
 ﻿using Service.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,10 +22,8 @@ namespace ChatServices
         {
             if (!streamingService.IsStreamLive) return;
 
-            foreach(var provider in loggingProviders)
-            {
-                await provider.LogMessage(message, severity).ConfigureAwait(false);
-            }
+            var tasks = loggingProviders.Select(lp => lp.LogMessage(message, severity)).ToArray();
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             return;
         }
@@ -33,10 +32,8 @@ namespace ChatServices
         {
             if (!streamingService.IsStreamLive) return;
 
-            foreach (var provider in loggingProviders)
-            {
-                await provider.LogMessage(message, severity).ConfigureAwait(false);
-            }
+            var tasks = loggingProviders.Select(lp => lp.LogMessage(message, severity)).ToArray();
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             return;
         }
