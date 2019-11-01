@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatCommands.Test", "ChatCommands.Test\ChatCommands.Test.csproj", "{12EC61E6-0DED-47A0-B0A4-F373AE34982C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{6D922CB0-CA76-4F2D-BE5F-155F92ECB1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D922CB0-CA76-4F2D-BE5F-155F92ECB1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D922CB0-CA76-4F2D-BE5F-155F92ECB1CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12EC61E6-0DED-47A0-B0A4-F373AE34982C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12EC61E6-0DED-47A0-B0A4-F373AE34982C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12EC61E6-0DED-47A0-B0A4-F373AE34982C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12EC61E6-0DED-47A0-B0A4-F373AE34982C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
