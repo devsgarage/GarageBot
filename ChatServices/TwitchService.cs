@@ -79,8 +79,8 @@ namespace ChatServices
         private static StreamData ParseStreamMetaData(string results)
         {
             var obj = JsonConvert.DeserializeObject<JObject>(results);
-            var data = obj.GetValue("data")[0];
-            var streamData = JsonConvert.DeserializeObject<StreamData>(data.ToString());
+            var data = obj.GetValue("data").First;
+            var streamData = data.ToObject<StreamData>();
             return streamData;
         }
     }
