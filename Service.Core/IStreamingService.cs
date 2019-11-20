@@ -6,6 +6,7 @@ namespace Service.Core
 {
     public interface IStreamingService
     {
+        event EventHandler<EventArgs> StateChanged;
         bool IsStreamLive { get; }
         void StartStream();
         void StopStream();

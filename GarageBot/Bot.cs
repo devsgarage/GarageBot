@@ -33,6 +33,7 @@ namespace GarageBot
 
         private void Service_UserJoinedChat(object sender, UserJoinedChatArgs e)
         {
+            loggingService.LogUserJoined(e.UserName, DateTime.Now);
             var commandsToExecute =
                 commands.Where(c => c.Command.Any(cmd => USER_JOINED_COMMAND_NAME.AsSpan().Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
                                                          !CommandInCooldown(cmd, c.Cooldown)));
@@ -50,6 +51,7 @@ namespace GarageBot
 
         private void Service_ChatMessageReceieved(object sender, ChatMessageReceivedArgs e)
         {
+            loggingService.ChatMessages(e.UserName, e.Message, DateTime.Now);
             Console.WriteLine("Bot recieved messsage");
             ProcessIncomingMessage(e.Message, e.IsBroadcaster, e.UserName);
         }
@@ -62,7 +64,7 @@ namespace GarageBot
             var command = ParseCommand(message);
 
             var commandsToExecute =
-                commands.Where(c => c.Command.Any(cmd => USER_JOINED_COMMAND_NAME.AsSpan().Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
+                commands.Where(c => c.Command.Any(cmd => command.command.Span.Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
                                                          !CommandInCooldown(cmd, c.Cooldown)));
 
             foreach (var commandToExecute in commandsToExecute)

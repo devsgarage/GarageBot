@@ -31,6 +31,8 @@ namespace GarageBot
                     var twitchSettings = hostContext.Configuration.GetSection("twitch").Get<TwitchSettings>();
                     services.AddSingleton(twitchSettings);
 
+                    services.Configure<CosmosSettings>(hostContext.Configuration.GetSection("cosmos"));
+                    
                     services.AddSingleton<LoggingService>();
                     services.AddHttpClient<IChatService, TwitchService>();
                     services.AddHttpClient<Proxy>();
