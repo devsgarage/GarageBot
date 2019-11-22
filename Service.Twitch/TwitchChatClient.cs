@@ -37,6 +37,7 @@ namespace Service.Twitch
         public event EventHandler<ChatConnectedEventArgs> Connected;
         public event EventHandler<NewMessageEventArgs> NewMessage;
         public event EventHandler<ChatUserJoinedEventArgs> UserJoined;
+        public event EventHandler<ChatUserLeftEventArgs> UserLeft;
 
         public TwitchChatClient(TwitchSettings settings)
         {            
@@ -236,13 +237,15 @@ namespace Service.Twitch
             if (!string.IsNullOrEmpty(userName) && msg.Contains($" JOIN #{chatChannelName}"))
             {
                 UserJoined?.Invoke(this, new ChatUserJoinedEventArgs { UserName = userName });
-                Console.WriteLine($"***** UserName: {userName} *****");
+            }
+            else if (!string.IsNullOrEmpty(userName) && msg.Contains($" PART #{chatChannelName}"))
+            {
+                UserLeft?.Invoke(this, new ChatUserLeftEventArgs { UserName = userName });
             }
 
             //// Review messages sent to the channel
             if (reChatMessage.IsMatch(msg))
             {
-
                 message = TwitchChatClient.reChatMessage.Match(msg).Groups[1].Value;
                 Console.WriteLine($"Message received from '{userName}': {message}");
                 //Logger.LogTrace($"Message received from '{userName}': {message}");

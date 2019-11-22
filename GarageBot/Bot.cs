@@ -28,12 +28,18 @@ namespace GarageBot
             service = twitchService;
             service.ChatMessageReceieved += Service_ChatMessageReceieved;
             service.UserJoinedChat += Service_UserJoinedChat;
+            service.UserLeftChat += Service_UserLeftChat;
             service.Start();
+        }
+
+        private void Service_UserLeftChat(object sender, UserLeftChatArgs e)
+        {
+            loggingService.LogUserLeft(e.UserName, DateTime.Now).FireAndForget();
         }
 
         private void Service_UserJoinedChat(object sender, UserJoinedChatArgs e)
         {
-            loggingService.LogUserJoined(e.UserName, DateTime.Now);
+            loggingService.LogUserJoined(e.UserName, DateTime.Now).FireAndForget();
             var commandsToExecute =
                 commands.Where(c => c.Command.Any(cmd => USER_JOINED_COMMAND_NAME.AsSpan().Equals(cmd.AsSpan(), StringComparison.OrdinalIgnoreCase) &&
                                                          !CommandInCooldown(cmd, c.Cooldown)));
@@ -51,7 +57,7 @@ namespace GarageBot
 
         private void Service_ChatMessageReceieved(object sender, ChatMessageReceivedArgs e)
         {
-            loggingService.ChatMessages(e.UserName, e.Message, DateTime.Now);
+            loggingService.ChatMessages(e.UserName, e.Message, DateTime.Now).FireAndForget();
             Console.WriteLine("Bot recieved messsage");
             ProcessIncomingMessage(e.Message, e.IsBroadcaster, e.UserName);
         }

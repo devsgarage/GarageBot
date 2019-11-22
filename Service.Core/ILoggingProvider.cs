@@ -9,6 +9,8 @@ namespace Service.Core
     {
         Task StartNewStream(string streamDescription);
 
+        Task StopStream();
+
         Task UserJoined(string username, DateTime joinedDateTime);
 
         Task UserLeft(string username, DateTime leftDateTime);

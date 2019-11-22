@@ -25,7 +25,8 @@ namespace ChatServices
 
         public event EventHandler<ChatMessageReceivedArgs> ChatMessageReceieved;
         public event EventHandler<UserJoinedChatArgs> UserJoinedChat;
-
+        public event EventHandler<UserLeftChatArgs> UserLeftChat;
+        
         public Task<bool> SendMessage(string message)
         {
             chatClient.PostMessage(message);
@@ -37,8 +38,14 @@ namespace ChatServices
             chatClient.NewMessage += ChatClient_NewMessage;
             chatClient.Connected += ChatClient_Connected;
             chatClient.UserJoined += ChatClient_UserJoined;
+            chatClient.UserLeft += ChatClient_UserLeft;
             chatClient.Init();
             return Task.CompletedTask;
+        }
+
+        private void ChatClient_UserLeft(object sender, Service.Twitch.Models.ChatUserLeftEventArgs e)
+        {
+            UserLeftChat?.Invoke(this, new UserLeftChatArgs { UserName = e.UserName });
         }
 
         private void ChatClient_UserJoined(object sender, Service.Twitch.Models.ChatUserJoinedEventArgs e)

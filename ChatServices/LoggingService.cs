@@ -17,12 +17,22 @@ namespace ChatServices
             this.loggingProviders = loggingProviders; 
             this.streamingService = streamingService;
             this.streamingService.StateChanged += async(s, a) => {
-                if (!streamingService.IsStreamLive) return;
-                var tasks = loggingProviders.Select(lp =>
+                if (streamingService.IsStreamLive)
                 {
-                    return lp.StartNewStream($"Stream {DateTime.Today}");
-                }).ToArray();
-                await Task.WhenAll(tasks).ConfigureAwait(false);
+                    var tasks = loggingProviders.Select(lp =>
+                    {
+                        return lp.StartNewStream($"Stream {DateTime.Today}");
+                    }).ToArray();
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+                else
+                {
+                    var tasks = loggingProviders.Select(lp =>
+                    {
+                        return lp.StopStream();
+                    }).ToArray();
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
             };
         }
 

@@ -9,6 +9,7 @@ namespace Service.Core
     {
         event EventHandler<ChatMessageReceivedArgs> ChatMessageReceieved;
         event EventHandler<UserJoinedChatArgs> UserJoinedChat;
+        event EventHandler<UserLeftChatArgs> UserLeftChat;
 
         Task Start();
 

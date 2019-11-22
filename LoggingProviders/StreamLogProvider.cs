@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LoggingProviders
@@ -16,11 +17,26 @@ namespace LoggingProviders
         CosmosClient client;
         CosmosSettings settings;
         CosmosStreamData streamData;
+        CancellationTokenSource cancellationTokenSource;
+        bool timerRunning = false;
 
         public StreamLogProvider(IOptions<CosmosSettings> settings)
         {
             this.settings = settings.Value;
             ConfigureCosmosClient();
+            CheckForActiveStream().ConfigureAwait(false).GetAwaiter();
+        }
+
+        private async Task CheckForActiveStream()
+        {
+            var container = client.GetContainer(settings.DatabaseId, settings.ContainerId);
+            var sqlQueryText = "SELECT * FROM c WHERE IS_NULL(c['end'])";
+            QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
+            await foreach (var sData in container.GetItemQueryIterator<CosmosStreamData>(queryDefinition))
+            {
+                streamData = sData;
+                break;
+            }
         }
 
         private void ConfigureCosmosClient()
@@ -40,26 +56,43 @@ namespace LoggingProviders
 
         public async Task StartNewStream(string streamDescription)
         {
-            streamData = new CosmosStreamData
+            if (streamData is null)
             {
-                Id = Guid.NewGuid(),
-                Description = streamDescription,
-                Month = DateTime.Now.ToString("MMMM"),
-                Start = string.Format("{0:MM/dd/yy H:mm:ss}", DateTime.Now),
-                End = null,
-                UsersJoined = Array.Empty<UserEvent>(),
-                UsersLeft = Array.Empty<UserEvent>(),
-                CommandsUsed = Array.Empty<CommandUsedInfo>(),
-                Messages = Array.Empty<ChatMessage>(),
-                Information = Array.Empty<MessageData>(),
-                Exceptions = Array.Empty<MessageData>(),
-                Ideas = Array.Empty<Idea>(),
-                NewFollowers = Array.Empty<UserEvent>(),
-                NewSubscribers = Array.Empty<UserEvent>()
-            };
+                streamData = new CosmosStreamData
+                {
+                    Id = Guid.NewGuid(),
+                    Description = streamDescription,
+                    Month = DateTime.Now.ToString("MMMM"),
+                    Start = string.Format("{0:MM/dd/yy H:mm:ss}", DateTime.Now),
+                    End = null,
+                    UsersJoined = Array.Empty<UserEvent>(),
+                    UsersLeft = Array.Empty<UserEvent>(),
+                    CommandsUsed = Array.Empty<CommandUsedInfo>(),
+                    Messages = Array.Empty<ChatMessage>(),
+                    Information = Array.Empty<MessageData>(),
+                    Exceptions = Array.Empty<MessageData>(),
+                    Ideas = Array.Empty<Idea>(),
+                    NewFollowers = Array.Empty<UserEvent>(),
+                    NewSubscribers = Array.Empty<UserEvent>()
+                };
 
-            var container = client.GetContainer(settings.DatabaseId, settings.ContainerId);
-            streamData = await container.CreateItemAsync(streamData, new PartitionKey(streamData.Month));
+                var container = client.GetContainer(settings.DatabaseId, settings.ContainerId);
+                streamData = await container.CreateItemAsync(streamData, new PartitionKey(streamData.Month));
+            }
+
+            if (!timerRunning)
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+                StartUpdater(cancellationTokenSource.Token);
+            }
+        }
+
+        public async Task StopStream()
+        {
+            streamData.End = string.Format("{0:MM/dd/yy H:mm:ss}", DateTime.Now);
+            cancellationTokenSource.Cancel();
+            await UpdateLog();
+            streamData = null;
         }
 
         public Task ChatMessages(string username, string chatMessage, DateTime messageDateTime)
@@ -170,6 +203,17 @@ namespace LoggingProviders
         {
             var container = client.GetContainer(settings.DatabaseId, settings.ContainerId);
             await container.UpsertItemAsync(streamData, new PartitionKey(streamData.Month));
+        }
+
+        private async Task StartUpdater(CancellationToken cancellationToken)
+        {
+            timerRunning = true;
+            while(!cancellationToken.IsCancellationRequested)
+            {
+                await UpdateLog();
+                await Task.Delay(10000, cancellationToken);
+            }
+            timerRunning = false;
         }
     }
 }
