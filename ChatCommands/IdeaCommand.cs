@@ -15,6 +15,7 @@ namespace ChatCommands
 
         public IdeaCommand(Action<string, CommandArgs> ideaWriterAction)
         {
+            //TODO: Remove in favor of Logging
             _ideaWriterAction = ideaWriterAction;
         }
 
