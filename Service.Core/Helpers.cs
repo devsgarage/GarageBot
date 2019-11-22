@@ -7,6 +7,7 @@ namespace Service.Core
 {
     public static class Helpers
     {
+        // Shout out to Coding for showing us this technique
         public static async void FireAndForget(this Task task)
         {
             try
