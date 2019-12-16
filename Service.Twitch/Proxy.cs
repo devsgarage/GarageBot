@@ -7,13 +7,16 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using ConstantAlias = Service.Core.Constants;
+
 namespace Service.Twitch
 {
+
     public class Proxy
     {
         HttpClient client;
         private const string developersGarageTwitchId = "245291776";
-        private const string channelName = "developersgarage";
+        private const string channelName = ConstantAlias.ChatService.ChannelName;
         private const string twitchApiUri = "https://api.twitch.tv";
         public Proxy(HttpClient client, TwitchSettings settings)
         {

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using ConstantAlias = Service.Core.Constants;
+
 namespace ChatCommands
 {
     public class ProjectCommand : IChatCommand
@@ -18,7 +20,7 @@ namespace ChatCommands
             if (args.IsBroadcaster && !args.Text.IsEmpty)
                 currentProject = args.Text.ToString();
             if (string.IsNullOrWhiteSpace(currentProject))
-                await service.SendMessage("Hey @developersgarage, what are we working on today?");
+                await service.SendMessage("Hey "+ ConstantAlias.ChatService.ChannelName +", what are we working on today?");
             else
                 await service.SendMessage(currentProject);
         }
