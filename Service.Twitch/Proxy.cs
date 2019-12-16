@@ -11,13 +11,12 @@ using ConstantAlias = Service.Core.Constants;
 
 namespace Service.Twitch
 {
-    ConstantAlias.ChatService ChatName = new ConstantAlias.ChatService();
 
     public class Proxy
     {
         HttpClient client;
         private const string developersGarageTwitchId = "245291776";
-        private const string channelName = ChatName.ChannelName;
+        private const string channelName = ConstantAlias.ChatService.ChannelName;
         private const string twitchApiUri = "https://api.twitch.tv";
         public Proxy(HttpClient client, TwitchSettings settings)
         {

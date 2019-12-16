@@ -12,7 +12,6 @@ using ConstantAlias = Service.Core.Constants;
 
 namespace ChatServices
 {
-    ConstantAlias.ChatService ChatName = new ConstantAlias.ChatService();
 
     public class TwitchService : IChatService
     {
@@ -59,7 +58,7 @@ namespace ChatServices
         {
             ChatMessageReceieved?.Invoke(this, new ChatMessageReceivedArgs
             {
-                IsBroadcaster = e.UserName == ChatName.ChannelName,
+                IsBroadcaster = e.UserName == ConstantAlias.ChatService.ChannelName,
                 Message = e.Message,
                 UserName = e.UserName
             });

@@ -7,8 +7,6 @@ using ConstantAlias = Service.Core.Constants;
 
 namespace ChatCommands
 {
-    ConstantAlias.ChatService ChatName = new ConstantAlias.ChatService();
-
     public class ProjectCommand : IChatCommand
     {
         public IEnumerable<string> Command => new[] { "project" };
@@ -22,7 +20,7 @@ namespace ChatCommands
             if (args.IsBroadcaster && !args.Text.IsEmpty)
                 currentProject = args.Text.ToString();
             if (string.IsNullOrWhiteSpace(currentProject))
-                await service.SendMessage("Hey "+ ChatName.ChannelName +", what are we working on today?");
+                await service.SendMessage("Hey "+ ConstantAlias.ChatService.ChannelName +", what are we working on today?");
             else
                 await service.SendMessage(currentProject);
         }

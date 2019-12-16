@@ -14,7 +14,6 @@ using ConstantAlias = Service.Core.Constants;
 
 namespace Service.Twitch
 {
-    ConstantAlias.ChatService ChatName = new ConstantAlias.ChatService();
 
     public class TwitchChatClient : IDisposable
     {
@@ -25,7 +24,7 @@ namespace Service.Twitch
         private readonly CancellationTokenSource _Shutdown;
 
         private const string chatBotName = "developersgarage_bot";
-        private const string chatChannelName = ChatName.ChannelName;
+        private const string chatChannelName = ConstantAlias.ChatService.ChannelName;
 
         internal static readonly Regex reUserName = new Regex(@"!([^@]+)@");
         internal static readonly Regex reBadges = new Regex(@"@badges=([^;]*)");
